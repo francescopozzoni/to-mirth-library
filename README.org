@@ -3,4 +3,17 @@
 #+DATE: 2022-05-16
 
 * Description
-Simple script to convert js file into mirth libraries or into mirth compatible scripts.
+Simple script to convert js file into mirth libraries or into mirth compatible scripts. For library file a file containing only functions coupled with JSDOC comment. For script file a script using JavaScript Rhino is intended.
+
+* Usage
+~to-mirth-library.sh options input output~
+
+options:
+  -l to perform a transformation of a library file
+  -s to perform a tranformation of a script file
+
+input:
+  the file to transform
+
+output:
+  the output filename, the extension will be appended accordingly
