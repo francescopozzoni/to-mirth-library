@@ -1,0 +1,6 @@
+#+AUTHOR: Francesco Pozzoni
+#+TITLE: to-mirth-library
+#+DATE: 2022-05-16
+
+* Description
+Simple script to convert js file into mirth libraries or into mirth compatible scripts.
