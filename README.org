@@ -17,3 +17,6 @@ input:
 
 output:
   the output filename, the extension will be appended accordingly
+
+* Additional info
+This bash script is developed and working under MacOS using gnutils, ~sed~ command is referenced as ~gsed~ and so on.
