@@ -25,7 +25,7 @@ if [ $# -ne 3 ]; then
     usage;
 fi
 
-if [ "$1" != "-l" ] && [ "$1" != "-f" ]; then
+if [ "$1" != "-l" ] && [ "$1" != "-s" ]; then
     echo "ERROR: Unknown flag options.";
     usage;
 fi
@@ -96,8 +96,8 @@ if [ "$1" == "-l" ]; then
 $LINE";
         fi
 
-        if [[ "$LINE" =~ ^function.*\(.* ]];
-        then
+        # get function name
+        if [[ "$LINE" =~ ^function.*\(.* ]]; then
             FUNCTION_NAME=$(gsed 's/^function \(.*\)(.*/\1/' <<< "$LINE");
         fi
         
@@ -130,7 +130,7 @@ $LINE";
       </properties>
     </codeTemplate>" >> $OUTPUT_FILE;
         fi
-    done < temp
+    done < temp;
 
     # closing xml
     echo "  </codeTemplates>
@@ -140,5 +140,24 @@ $LINE";
     rm temp;
 else 
     # script file transformation
-    echo "";
+    OUTPUT_FILE="$3-output.js";
+
+    # copy the input file
+    \cp $2 "$OUTPUT_FILE";
+
+    # apply mirth changes
+
+    # declaration of const automagically become insertion in the globalChannelMap
+    gsed -i "s/const \(.*\) = \('.*'\)/globalChannelMap.put('\1',\2)/g" "$OUTPUT_FILE";
+
+    # log variable is read and modified directly from the globalChannelMap
+    perl -i -p0e "s/var log = ('.*?');/channelMap.put('log', \\$\('log'\) + \1);/gs" "$OUTPUT_FILE";
+    perl -i -p0e "s/log \+= ('.*?');/channelMap.put('log', \\$\('log'\) + \1);/gs" "$OUTPUT_FILE";
+    perl -i -p0e "s/log \+= ('.*');/channelMap.put('log', \\$\('log'\) + \1);/gs" "$OUTPUT_FILE";
+
+    # error variable is read from the globalChannelMap and stored in the 
+    if ggrep -q 'var err;' "$OUTPUT_FILE"; then
+        perl -i -p0e "s/var err;/channelMap.put('err', false;/s" "$OUTPUT_FILE";
+        echo "channelMap.put('err', err)" >> $OUTPUT_FILE;
+    fi 
 fi

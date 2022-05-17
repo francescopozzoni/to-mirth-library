@@ -5,12 +5,20 @@
 * Description
 Simple script to convert js file into mirth libraries or into mirth compatible scripts. For library file a file containing only functions coupled with JSDOC comment. For script file a script using JavaScript Rhino is intended.
 
+* Prerequisites
+In order to run the script the following software need to be in the ~PATH~:
+- ~sed~
+- ~grep~
+- ~perl~
+
+Please note that this bash script is developed for working under MacOS using ~coreutils~ installed via ~homebrew~, ~sed~ command is referenced as ~gsed~ and so on.
+
 * Usage
 ~to-mirth-library.sh options input output~
 
 options:
   -l to perform a transformation of a library file
-  -s to perform a tranformation of a script file
+  -s to perform a transformation of a script file
 
 input:
   the file to transform
@@ -18,5 +26,6 @@ input:
 output:
   the output filename, the extension will be appended accordingly
 
-* Additional info
-This bash script is developed and working under MacOS using gnutils, ~sed~ command is referenced as ~gsed~ and so on.
+* Next steps
+- [X] implement -s option to perform the transformation of script files
+- [ ] add additional transformation in -s
